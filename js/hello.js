@@ -1,15 +1,29 @@
-const loadPhones = async () =>{
-    const res = await fetch('https://openapi.programming-hero.com/api/phones?search=iphone');
+const loadPhones = async (searchText) =>{
+    
+    const res = await fetch(`https://openapi.programming-hero.com/api/phones?search=${searchText}`);
     const data = await res.json();
     const phones = data.data;
     displayPhones(phones);
+   
+};
+var showAllParameter;
+function showAll(){
+    showAllParameter = true;
+    handleSearch()
 }
 
 const displayPhones = (phones) =>{
     const phoneContainer = document.getElementById("phones-container");
     phoneContainer.innerHTML = '';
-    for(const phone of phones){
-        // console.log(phone);
+    const numbersOfPhones = phones.length;
+    if(numbersOfPhones >12){
+        const showAllButton = document.getElementById('show-all-button');
+        showAllButton.classList.remove('hidden')
+    }
+    if(!showAllParameter){
+        phones = phones.slice(0,12);
+    }
+    phones.forEach(phone =>{
         const newPhone = document.createElement('p');
         newPhone.innerHTML =`
         <div class="card glass p-8">
@@ -27,7 +41,13 @@ const displayPhones = (phones) =>{
       
       `
         phoneContainer.appendChild(newPhone);
-    }
+    })
+    // for(const phone of phones){
+    //     // console.log(phone);
+        
+    // }
+    toggleLoadingSpinner(false);
+
 }
 
 loadPhones();
@@ -40,11 +60,19 @@ const showMore = async (data) =>{
 
 
 const handleSearch = () =>{
+    toggleLoadingSpinner(true);
     const searchInput = document.getElementById('search-input');
     const searchText = searchInput.value;
-    fetch(`https://openapi.programming-hero.com/api/phones?search=${searchText}`)
-    .then(res => res.json())
-    .then(data => displayPhones(data.data))
-    console.log(searchText);
+    loadPhones(searchText);
+    
+}
+
+const toggleLoadingSpinner = (isLoading) =>{
+    const loadingSpinner = document.getElementById('loading-spinner');
+    if(isLoading){
+        loadingSpinner.classList.remove("hidden");
+    } else{
+        loadingSpinner.classList.add("hidden");
+    }
 
 }
