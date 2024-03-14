@@ -7,22 +7,28 @@ const loadPhones = async (searchText) =>{
    
 };
 var showAllParameter;
+var showAllClicked;
 function showAll(){
     showAllParameter = true;
     handleSearch()
+    showAllClicked = true;
 }
 
 const displayPhones = (phones) =>{
     const phoneContainer = document.getElementById("phones-container");
     phoneContainer.innerHTML = '';
     const numbersOfPhones = phones.length;
+    const showAllButton = document.getElementById('show-all-button');
     if(numbersOfPhones >12){
-        const showAllButton = document.getElementById('show-all-button');
-        showAllButton.classList.remove('hidden')
+        showAllButton.classList.remove('hidden');
+    }
+    if(showAllClicked){
+        showAllButton.classList.add('hidden');
+        console.log('clicked');
     }
     if(!showAllParameter){
         phones = phones.slice(0,12);
-    }
+    } 
     phones.forEach(phone =>{
         const newPhone = document.createElement('p');
         newPhone.innerHTML =`
