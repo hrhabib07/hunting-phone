@@ -1,4 +1,4 @@
-const loadPhones = async (searchText) =>{
+const loadPhones = async (searchText="13") =>{
     
     const res = await fetch(`https://openapi.programming-hero.com/api/phones?search=${searchText}`);
     const data = await res.json();
@@ -6,6 +6,7 @@ const loadPhones = async (searchText) =>{
     displayPhones(phones);
    
 };
+loadPhones();
 var showAllParameter;
 var showAllClicked;
 function showAll(){
@@ -21,6 +22,8 @@ const displayPhones = (phones) =>{
     const showAllButton = document.getElementById('show-all-button');
     if(numbersOfPhones >12){
         showAllButton.classList.remove('hidden');
+    } else if ( numbersOfPhones === 0){
+        document.getElementById("error-container").innerHTML = `<h2 class="font-bold text-5xl my-4 text-red-800 text-center ">No phone found</h2>`
     }
     if(showAllClicked){
         showAllButton.classList.add('hidden');
@@ -43,8 +46,6 @@ const displayPhones = (phones) =>{
 </div>.
         </div>
       </div> 
-      
-      
       `
         phoneContainer.appendChild(newPhone);
     })
@@ -61,9 +62,32 @@ loadPhones();
 const showMore = async (data) =>{
     const res = await fetch(`https://openapi.programming-hero.com/api/phone/${data}`)
     const result = await res.json();
-    console.log(result.data);
+    showModalData(result.data);
 }
 
+function showModalData(phone){
+    show_detail_modal.showModal();
+    console.log(phone);
+    const phoneName = document.getElementById('show-detail-phone-name');
+    const phoneImage = document.getElementById('show-detail-phone-photo');
+    const phoneDetailContainer = document.getElementById('show-detail-phone-detail-container');
+    phoneDetailContainer.innerHTML = `
+    
+    <p class="py-2"> <span class="font-bold">Storage : </span> <span class="text-gray-500">${phone?.mainFeatures?.storage}</span> </p>
+    <p class="py-2"> <span class="font-bold">Display : </span> <span class="text-gray-500">${phone?.mainFeatures?.displaySize}</span> </p>
+    <p class="py-2"> <span class="font-bold">Chipset : </span> <span class="text-gray-500">${phone?.mainFeatures?.chipSet}</span> </p>
+    <p class="py-2"> <span class="font-bold">Memory : </span> <span class="text-gray-500">${phone?.mainFeatures?.memory}</span> </p>
+    <p class="py-2"> <span class="font-bold">Slug : </span> <span class="text-gray-500">${phone?.slug}</span> </p>
+    <p class="py-2"> <span class="font-bold">Release data : </span> <span class="text-gray-500">${phone?.releaseDate}</span> </p>
+    <p class="py-2"> <span class="font-bold">Brand : </span> <span class="text-gray-500">${phone?.brand}</span> </p>
+    <p class="py-2"> <span class="font-bold">GPS : </span> <span class="text-gray-500">${phone?.others?.GPS || "no GPS"}</span> </p>
+    
+    `
+    phoneName.innerText = phone.name;
+    phoneImage.setAttribute("src",`${phone.image}` );
+   
+
+}
 
 const handleSearch = () =>{
     toggleLoadingSpinner(true);

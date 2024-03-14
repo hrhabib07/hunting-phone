@@ -9,17 +9,42 @@
 </head>
 <body>
     <header></header>
-    <main class="container mx-auto">
-        <div class="m-4">
-            <input id="search-input" class="p-3 bg-gray-200 rounded w-1/4" type="text" placeholder="Search...">
+    <main class="container mx-auto bg-gray-50">
+        <div class="m-4 flex justify-center">
+            <div>
+            <h2 class="font-bold text-3xl my-4">Search your phone</h2>
+            <input id="search-input" class="p-3 bg-gray-200 rounded " type="text" placeholder="Search...">
             <button onclick="handleSearch()" class="btn btn-info text-white">Search</button>
+            </div>
         </div>
        
       <div id="loading-spinner" class="ml-10 mt-10  hidden">  <span class="loading loading-ring loading-lg text-info"></span></div>
-        <div id="phones-container" class="grid grid-cols-3 gap-3">
+        <div id="phones-container" class="grid grid-cols-1 md:grid-cols-3 gap-3 m-4">
         </div>
-        <div class="flex items-center justify-center ">
+        <div id="error-container" class="h-96 flex items-center justify-center">
+        </div>
+        <div class="flex items-center justify-center m-4">
             <button id="show-all-button" class="btn btn-info text-white hidden" onclick="showAll()">Show All</button>
+        </div>
+        <div id="modal-container">
+
+            <!-- Open the modal using ID.showModal() method -->
+            <dialog id="show_detail_modal" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box">
+                <div class="flex justify-center"><img id="show-detail-phone-photo" src="" alt=""></div>
+                <h3 id="show-detail-phone-name" class="text-center font-bold text-lg">Hello!</h3>
+                <p class="py-4 text-gray-500">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
+                <div id="show-detail-phone-detail-container">
+                    <p class="py-2"> <span class="font-bold">Storage : </span> <span id="show-detail-phone-storage" class="text-gray-500"></span> </p>
+                </div>
+                <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn btn-error text-white">Close</button>
+                </form>
+                </div>
+            </div>
+            </dialog>
         </div>
     </main>
     <footer></footer>
